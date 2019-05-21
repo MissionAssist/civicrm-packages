@@ -37,14 +37,14 @@ class HTML_Common
      * @var     array
      * @access  private
      */
-    public $_attributes = array();
+    var $_attributes = array();
 
     /**
      * Tab offset of the tag
      * @var     int
      * @access  private
      */
-    public $_tabOffset = 0;
+    var $_tabOffset = 0;
 
     /**
      * Tab string
@@ -52,7 +52,7 @@ class HTML_Common
      * @since     1.7
      * @access    private
      */
-    public $_tab = "\11";
+    var $_tab = "\11";
 
     /**
      * Contains the line end string
@@ -60,7 +60,7 @@ class HTML_Common
      * @since     1.7
      * @access    private
      */
-    public $_lineEnd = "\12";
+    var $_lineEnd = "\12";
 
     /**
      * HTML comment on the object
@@ -68,7 +68,7 @@ class HTML_Common
      * @since     1.5
      * @access    private
      */
-    public $_comment = '';
+    var $_comment = '';
 
     /**
      * Class constructor
@@ -77,7 +77,7 @@ class HTML_Common
      * @param    int     $tabOffset      Indent offset in tabs
      * @access   public
      */
-    public function __construct($attributes = null, $tabOffset = 0)
+    function __construct($attributes = null, $tabOffset = 0)
     {
         $this->setAttributes($attributes);
         $this->setTabOffset($tabOffset);
@@ -88,7 +88,7 @@ class HTML_Common
      * @access   public
      * @returns  double
      */
-    public function apiVersion()
+    function apiVersion()
     {
         return 1.7;
     } // end func apiVersion
@@ -100,7 +100,7 @@ class HTML_Common
      * @access    private
      * @return    string
      */
-    public function _getLineEnd()
+    function _getLineEnd()
     {
         return $this->_lineEnd;
     } // end func getLineEnd
@@ -112,7 +112,7 @@ class HTML_Common
      * @access    private
      * @return    string
      */
-    public function _getTab()
+    function _getTab()
     {
         return $this->_tab;
     } // end func _getTab
@@ -123,7 +123,7 @@ class HTML_Common
      * @return    string
      * @access   private
      */
-    public function _getTabs()
+    function _getTabs()
     {
         return str_repeat($this->_getTab(), $this->_tabOffset);
     } // end func _getTabs
@@ -134,28 +134,14 @@ class HTML_Common
      * @return   string
      * @access   private
      */
-    public function _getAttrString($attributes)
+    function _getAttrString($attributes)
     {
         $strAttr = '';
 
         if (is_array($attributes)) {
             $charset = HTML_Common::charset();
             foreach ($attributes as $key => $value) {
-                // Sometimes $value is an array.  If so, we take concatenate
-                // its elements.
-                if (is_array($value)) {
-                    if (count($value) == 0) {
-                        // An empty string.
-                        $value1 = '';
-                        $strAttr .= ' ' . $key . '="' . htmlspecialchars($value1, ENT_COMPAT, $charset) . '"';
-                    } else {
-                        foreach ($value as $value1) {
-                            $strAttr .= ' ' . $key . '="' . htmlspecialchars($value1, ENT_COMPAT, $charset) . '"';
-                        }
-                    }
-                } else {
-                    $strAttr .= ' ' . $key . '="' . htmlspecialchars($value, ENT_COMPAT, $charset) . '"';
-                }
+                $strAttr .= ' ' . $key . '="' . htmlspecialchars($value, ENT_COMPAT, $charset) . '"';
             }
         }
         return $strAttr;
@@ -167,7 +153,7 @@ class HTML_Common
      * @access   private
      * @return   array
      */
-    public function _parseAttributes($attributes)
+    function _parseAttributes($attributes)
     {
         if (is_array($attributes)) {
             $ret = array();
@@ -180,6 +166,7 @@ class HTML_Common
                 $ret[$key] = $value;
             }
             return $ret;
+
         } elseif (is_string($attributes)) {
             $preg = "/(([A-Za-z_:]|[^\\x00-\\x7F])([A-Za-z0-9_:.-]|[^\\x00-\\x7F])*)" .
                 "([ \\n\\t\\r]+)?(=([ \\n\\t\\r]+)?(\"[^\"]*\"|'[^']*'|[^ \\n\\t\\r]*))?/";
@@ -212,7 +199,7 @@ class HTML_Common
      * @access    private
      * @return    bool
      */
-    public function _getAttrKey($attr, $attributes)
+    function _getAttrKey($attr, $attributes)
     {
         if (isset($attributes[strtolower($attr)])) {
             return true;
@@ -227,7 +214,7 @@ class HTML_Common
      * @param    array   $attr2      New attributes array
      * @access   private
      */
-    public function _updateAttrArray(&$attr1, $attr2)
+    function _updateAttrArray(&$attr1, $attr2)
     {
         if (!is_array($attr2)) {
             return false;
@@ -246,7 +233,7 @@ class HTML_Common
      * @access    private
      * @return    void
      */
-    public function _removeAttr($attr, &$attributes)
+    function _removeAttr($attr, &$attributes)
     {
         $attr = strtolower($attr);
         if (isset($attributes[$attr])) {
@@ -262,7 +249,7 @@ class HTML_Common
      * @access    public
      * @return    string|null   returns null if an attribute does not exist
      */
-    public function getAttribute($attr)
+    function getAttribute($attr)
     {
         $attr = strtolower($attr);
         if (isset($this->_attributes[$attr])) {
@@ -278,7 +265,7 @@ class HTML_Common
      * @param   string  Attribute value (will be set to $name if omitted)
      * @access  public
      */
-    public function setAttribute($name, $value = null)
+    function setAttribute($name, $value = null)
     {
         $name = strtolower($name);
         if (is_null($value)) {
@@ -292,7 +279,7 @@ class HTML_Common
      * @param    mixed   $attributes     Either a typical HTML attribute string or an associative array
      * @access   public
      */
-    public function setAttributes($attributes)
+    function setAttributes($attributes)
     {
         $this->_attributes = $this->_parseAttributes($attributes);
     } // end func setAttributes
@@ -305,7 +292,7 @@ class HTML_Common
      * @access    public
      * @return    mixed   attributes
      */
-    public function getAttributes($asString = false)
+    function getAttributes($asString = false)
     {
         if ($asString) {
             return $this->_getAttrString($this->_attributes);
@@ -319,7 +306,7 @@ class HTML_Common
      * @param    mixed   $attributes     Either a typical HTML attribute string or an associative array
      * @access   public
      */
-    public function updateAttributes($attributes)
+    function updateAttributes($attributes)
     {
         $this->_updateAttrArray($this->_attributes, $this->_parseAttributes($attributes));
     } // end func updateAttributes
@@ -332,7 +319,7 @@ class HTML_Common
      * @access    public
      * @return    void
      */
-    public function removeAttribute($attr)
+    function removeAttribute($attr)
     {
         $this->_removeAttr($attr, $this->_attributes);
     } //end func removeAttribute
@@ -345,7 +332,7 @@ class HTML_Common
      * @access  public
      * @return  void
      */
-    public function setLineEnd($style)
+    function setLineEnd($style)
     {
         switch ($style) {
             case 'win':
@@ -368,7 +355,7 @@ class HTML_Common
      * @param    int     $offset
      * @access   public
      */
-    public function setTabOffset($offset)
+    function setTabOffset($offset)
     {
         $this->_tabOffset = $offset;
     } // end func setTabOffset
@@ -380,7 +367,7 @@ class HTML_Common
      * @access    public
      * @return    int
      */
-    public function getTabOffset()
+    function getTabOffset()
     {
         return $this->_tabOffset;
     } //end func getTabOffset
@@ -393,7 +380,7 @@ class HTML_Common
      * @access    public
      * @return    void
      */
-    public function setTab($string)
+    function setTab($string)
     {
         $this->_tab = $string;
     } // end func setTab
@@ -406,7 +393,7 @@ class HTML_Common
      * @access    public
      * @return    void
      */
-    public function setComment($comment)
+    function setComment($comment)
     {
         $this->_comment = $comment;
     } // end func setHtmlComment
@@ -418,7 +405,7 @@ class HTML_Common
      * @access    public
      * @return    string
      */
-    public function getComment()
+    function getComment()
     {
         return $this->_comment;
     } //end func getComment
@@ -430,7 +417,7 @@ class HTML_Common
      * @return    string
      * @abstract
      */
-    public function toHtml()
+    function toHtml()
     {
         return '';
     } // end func toHtml
@@ -440,7 +427,7 @@ class HTML_Common
      *
      * @access    public
      */
-    public function display()
+    function display()
     {
         print $this->toHtml();
     } // end func display
@@ -465,7 +452,7 @@ class HTML_Common
      * @access  public
      * @static
      */
-    public function charset($newCharset = null)
+    function charset($newCharset = null)
     {
         static $charset = 'ISO-8859-1';
 
@@ -475,3 +462,4 @@ class HTML_Common
         return $charset;
     } // end func charset
 } // end class HTML_Common
+?>
